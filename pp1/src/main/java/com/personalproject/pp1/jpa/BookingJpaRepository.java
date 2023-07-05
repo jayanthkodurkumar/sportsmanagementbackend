@@ -1,5 +1,8 @@
 package com.personalproject.pp1.jpa;
 
-public class BookingJpaRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BookingJpaRepository {
 
 }

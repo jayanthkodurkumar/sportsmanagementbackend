@@ -1,5 +1,8 @@
 package com.personalproject.pp1.users;
 
+import com.personalproject.pp1.jpa.BookingJpaRepository;
+import com.personalproject.pp1.jpa.UserJpaRepository;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -19,20 +22,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.sportsmanagementapplication.sportsmanagementapp.booking.Booking;
-import com.sportsmanagementapplication.sportsmanagementapp.jpa.BookingJpaRepository;
-import com.sportsmanagementapplication.sportsmanagementapp.jpa.UserJpaRepository;
-
 @RestController
 public class UserResource {
 
 	private UserJpaRepository userrepository;
-	private BookingJpaRepository bookingrepository;
+//	private BookingJpaRepository bookingrepository;
 
-	public UserResource(UserJpaRepository userrepository, BookingJpaRepository bookingrepository) {
+	public UserResource(UserJpaRepository userrepository) {
 		super();
 		this.userrepository = userrepository;
-		this.bookingrepository = bookingrepository;
+//		this.bookingrepository = bookingrepository;
 	}
 
 //	get /users
@@ -75,33 +74,33 @@ public class UserResource {
 		}
 
 		User savedUser = userrepository.save(user);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(savedUser.getUserId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(savedUser.getUser_id()).toUri();
 
 		return ResponseEntity.created(location).build();
 	}
 
 //	delete by id
 
-	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<?> deleteBooking(@PathVariable int userId) {
-		Optional<User> user = userrepository.findById(userId);
-
-		if (user.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with ID: " + userId);
-		}
-
-		User foundUser = user.get();
-		List<Booking> userBookings = foundUser.getBookings();
-
-		// Delete the associated bookings
-		for (Booking booking : userBookings) {
-			bookingrepository.delete(booking);
-		}
-
-		userrepository.deleteById(userId);
-
-		List<User> updatedUser = userrepository.findAll();
-		return ResponseEntity.ok(updatedUser);
-	}
-
+//	@DeleteMapping("/users/{userId}")
+//	public ResponseEntity<?> deleteBooking(@PathVariable int userId) {
+//		Optional<User> user = userrepository.findById(userId);
+//
+//		if (user.isEmpty()) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with ID: " + userId);
+//		}
+//
+//		User foundUser = user.get();
+//		List<Booking> userBookings = foundUser.getBookings();
+//
+//		// Delete the associated bookings
+//		for (Booking booking : userBookings) {
+//			bookingrepository.delete(booking);
+//		}
+//
+//		userrepository.deleteById(userId);
+//
+//		List<User> updatedUser = userrepository.findAll();
+//		return ResponseEntity.ok(updatedUser);
+//	}
+//
 }
