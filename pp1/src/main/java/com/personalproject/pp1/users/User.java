@@ -1,11 +1,16 @@
 package com.personalproject.pp1.users;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.personalproject.pp1.booking.Booking;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "user_details")
 public class User {
@@ -18,6 +23,10 @@ public class User {
 	private String last_name;
 	private String user_name;
 	private String password;
+
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Booking> bookings;
 
 	public Integer getUser_id() {
 		return user_id;
@@ -63,6 +72,14 @@ public class User {
 	public String toString() {
 		return "User [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_name="
 				+ user_name + ", password=" + password + "]";
+	}
+
+	public List<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
 }

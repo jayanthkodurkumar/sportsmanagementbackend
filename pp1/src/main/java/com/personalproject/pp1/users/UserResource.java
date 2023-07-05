@@ -1,5 +1,6 @@
 package com.personalproject.pp1.users;
 
+import com.personalproject.pp1.booking.Booking;
 import com.personalproject.pp1.jpa.BookingJpaRepository;
 import com.personalproject.pp1.jpa.UserJpaRepository;
 
@@ -26,12 +27,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UserResource {
 
 	private UserJpaRepository userrepository;
-//	private BookingJpaRepository bookingrepository;
+	private BookingJpaRepository bookingrepository;
 
-	public UserResource(UserJpaRepository userrepository) {
+	public UserResource(UserJpaRepository userrepository, BookingJpaRepository bookingrepository) {
 		super();
 		this.userrepository = userrepository;
-//		this.bookingrepository = bookingrepository;
+		this.bookingrepository = bookingrepository;
 	}
 
 //	get /users
@@ -81,26 +82,26 @@ public class UserResource {
 
 //	delete by id
 
-//	@DeleteMapping("/users/{userId}")
-//	public ResponseEntity<?> deleteBooking(@PathVariable int userId) {
-//		Optional<User> user = userrepository.findById(userId);
-//
-//		if (user.isEmpty()) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with ID: " + userId);
-//		}
-//
-//		User foundUser = user.get();
-//		List<Booking> userBookings = foundUser.getBookings();
-//
-//		// Delete the associated bookings
-//		for (Booking booking : userBookings) {
-//			bookingrepository.delete(booking);
-//		}
-//
-//		userrepository.deleteById(userId);
-//
-//		List<User> updatedUser = userrepository.findAll();
-//		return ResponseEntity.ok(updatedUser);
-//	}
-//
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<?> deleteBooking(@PathVariable int userId) {
+		Optional<User> user = userrepository.findById(userId);
+
+		if (user.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with ID: " + userId);
+		}
+
+		User foundUser = user.get();
+		List<Booking> userBookings = foundUser.getBookings();
+
+		// Delete the associated bookings
+		for (Booking booking : userBookings) {
+			bookingrepository.delete(booking);
+		}
+
+		userrepository.deleteById(userId);
+
+		List<User> updatedUser = userrepository.findAll();
+		return ResponseEntity.ok(updatedUser);
+	}
+
 }
