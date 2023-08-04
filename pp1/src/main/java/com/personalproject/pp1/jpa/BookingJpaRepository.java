@@ -16,8 +16,8 @@ public interface BookingJpaRepository extends JpaRepository<Booking, Integer> {
 	boolean existsByUserNameAndDateAndStartTime(@Param("userName") String userName, @Param("date") LocalDate date,
 			@Param("startTime") LocalTime startTime);
 
-	@Query("SELECT COUNT(b) > 0 FROM booking_details b WHERE b.sport_name = :sportName AND b.date = :date AND b.start_time = :startTime")
-	boolean existsBySportNameAndDateAndStartTime(@Param("sportName") String sportName, @Param("date") LocalDate date,
-			@Param("startTime") LocalTime startTime);
+//	@Query("SELECT COUNT(b) > 0 FROM booking_details b WHERE b.sport_name = :sportName AND b.date = :date AND b.start_time = :startTime")
+//	boolean existsBySportNameAndDateAndStartTime(@Param("sportName") String sportName, @Param("date") LocalDate date,
+//			@Param("startTime") LocalTime startTime);
 
 }

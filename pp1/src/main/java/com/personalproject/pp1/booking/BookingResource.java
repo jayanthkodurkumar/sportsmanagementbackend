@@ -76,14 +76,14 @@ public class BookingResource {
 					.body("Booking already exists for the specified user, date, and start time");
 		}
 
-		String sportName = booking.getSport_name();
+//		String sportName = booking.getSport_name();
+//
+//		boolean bookingExists = bookingrepository.existsBySportNameAndDateAndStartTime(sportName, date, startTime);
 
-		boolean bookingExists = bookingrepository.existsBySportNameAndDateAndStartTime(sportName, date, startTime);
-
-		if (bookingExists) {
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body("Booking already exists for the specified sport, date, and start time");
-		}
+//		if (bookingExists) {
+//			return ResponseEntity.status(HttpStatus.CONFLICT)
+//					.body("Booking already exists for the specified sport, date, and start time");
+//		}
 
 		Booking savedBooking = bookingrepository.save(booking);
 

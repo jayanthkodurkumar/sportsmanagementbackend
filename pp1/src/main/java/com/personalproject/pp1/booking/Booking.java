@@ -25,7 +25,7 @@ public class Booking {
 	private String last_name;
 	private String user_name;
 
-	private String sport_name;
+//	private String sport_name;
 	private LocalDate date;
 
 	private LocalTime start_time;
@@ -55,9 +55,9 @@ public class Booking {
 		return user_name;
 	}
 
-	public String getSport_name() {
-		return sport_name;
-	}
+//	public String getSport_name() {
+//		return sport_name;
+//	}
 
 	public LocalTime getStart_time() {
 		return start_time;
@@ -83,9 +83,9 @@ public class Booking {
 		this.user_name = user_name;
 	}
 
-	public void setSport_name(String sport_name) {
-		this.sport_name = sport_name;
-	}
+//	public void setSport_name(String sport_name) {
+//		this.sport_name = sport_name;
+//	}
 
 	public void setStart_time(LocalTime start_time) {
 		this.start_time = start_time;
@@ -114,8 +114,8 @@ public class Booking {
 	@Override
 	public String toString() {
 		return "Booking [booking_id=" + booking_id + ", first_name=" + first_name + ", last_name=" + last_name
-				+ ", user_name=" + user_name + ", sport_name=" + sport_name + ", date=" + date + ", start_time="
-				+ start_time + ", end_time=" + end_time + ", user=" + user + "]";
+				+ ", user_name=" + user_name + "date=" + date + ", start_time=" + start_time + ", end_time=" + end_time
+				+ ", user=" + user + "]";
 	}
 
 }

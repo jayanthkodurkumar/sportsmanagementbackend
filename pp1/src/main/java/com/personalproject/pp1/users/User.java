@@ -23,6 +23,7 @@ public class User {
 	private String last_name;
 	private String user_name;
 	private String password;
+	private String role;
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
@@ -68,18 +69,26 @@ public class User {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "User [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_name="
-				+ user_name + ", password=" + password + "]";
-	}
-
 	public List<Booking> getBookings() {
 		return bookings;
 	}
 
 	public void setBookings(List<Booking> bookings) {
 		this.bookings = bookings;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "User [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_name="
+				+ user_name + ", password=" + password + ", role=" + role + ", bookings=" + bookings + "]";
 	}
 
 }
