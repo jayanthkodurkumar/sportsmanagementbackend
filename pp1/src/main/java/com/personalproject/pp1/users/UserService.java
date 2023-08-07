@@ -3,12 +3,15 @@ package com.personalproject.pp1.users;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserService {
 	private static List<User> users = new ArrayList<>();
 	private static int userCount = 0;
+	
 
 	public List<User> findAll() {
 		return users;
@@ -39,4 +42,6 @@ public class UserService {
 		Optional<User> optionalUser = users.stream().filter(user -> user.getUser_name().equals(username)).findFirst();
 		return optionalUser.orElse(null);
 	}
+
+	
 }

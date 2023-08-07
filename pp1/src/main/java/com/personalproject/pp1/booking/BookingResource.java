@@ -98,12 +98,12 @@ public class BookingResource {
 	public List<Booking> getBookingsByUserId(@PathVariable("user_id") Integer userId) {
 		List<Booking> userbooking = new ArrayList<Booking>();
 		List<Booking> allbooking = bookingrepository.findAll();
-		for (int i = 0; i < allbooking.size(); i++) {
-			if (userId == allbooking.get(i).getUser().getUser_id()) {
-				userbooking.add(allbooking.get(i));
+
+		for (Booking booking : allbooking) {
+			if (booking.getUser().getUser_id().equals(userId)) {
+				userbooking.add(booking);
 			}
 		}
-
 		return userbooking;
 	}
 

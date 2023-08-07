@@ -15,6 +15,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,15 +28,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-public class UserResource {
+public class UserResource implements UserDetailsService {
 
 	private UserJpaRepository userrepository;
 	private BookingJpaRepository bookingrepository;
+	private PasswordEncoder passwordEncoder;
 
-	public UserResource(UserJpaRepository userrepository, BookingJpaRepository bookingrepository) {
+	public UserResource(UserJpaRepository userrepository, BookingJpaRepository bookingrepository,
+			PasswordEncoder passwordEncoder) {
 		super();
 		this.userrepository = userrepository;
 		this.bookingrepository = bookingrepository;
+		this.passwordEncoder = passwordEncoder;
+
 	}
 
 //	get /users
@@ -73,7 +81,9 @@ public class UserResource {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
 
 		}
-
+		// Encrypt the password before saving
+		String encryptedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encryptedPassword);
 		User savedUser = userrepository.save(user);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(savedUser.getUser_id()).toUri();
 
@@ -102,6 +112,20 @@ public class UserResource {
 
 		List<User> updatedUser = userrepository.findAll();
 		return ResponseEntity.ok(updatedUser);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+//		return this.userrepository.findByUserName(username).map(user -> new MyUserPrincipal(user))
+//				.orElseThrow(() -> new UsernameNotFoundException(username + "not found"));
+		User user = this.userrepository.findByUserName(username);
+
+		if (user == null) {
+			throw new UsernameNotFoundException(username + " not found");
+		}
+
+		return new MyUserPrincipal(user);
 	}
 
 }
