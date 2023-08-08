@@ -21,6 +21,7 @@ public class SecurityConfiguration {
 		return http
 
 				.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+						.requestMatchers(HttpMethod.GET, "/").permitAll()
 						.requestMatchers(HttpMethod.GET, "/users/*").hasRole("user")
 						.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("user")
 						.requestMatchers(HttpMethod.GET, "/users").hasRole("admin")

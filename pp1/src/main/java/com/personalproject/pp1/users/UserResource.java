@@ -44,6 +44,12 @@ public class UserResource implements UserDetailsService {
 	}
 
 //	get /users
+	@GetMapping("/")
+	public String test() {
+
+		return "test site";
+//		return userservice.findAll();
+	}
 	@GetMapping("/users")
 	public List<User> retrieveAllUsers() {
 
