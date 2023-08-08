@@ -7,7 +7,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfiguration {
@@ -23,14 +26,16 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.GET, "/users").hasRole("admin")
 						.requestMatchers(HttpMethod.POST, "/users").permitAll()
 						.requestMatchers(HttpMethod.POST, "/users/*/booking").hasRole("user")
-						.requestMatchers(HttpMethod.GET, "/booking").hasRole("admin")
-						.anyRequest().authenticated()
+						.requestMatchers(HttpMethod.GET, "/booking").hasRole("admin").anyRequest().authenticated()
 
-				).csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults()).build();
+				).csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults())
+
+				.build();
 	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(12);
 	}
+
 }

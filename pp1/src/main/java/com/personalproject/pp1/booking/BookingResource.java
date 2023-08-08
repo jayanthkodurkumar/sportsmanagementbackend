@@ -14,6 +14,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,11 @@ public class BookingResource {
 		this.userRepository = userRepository;
 	}
 
+	private boolean isAnyFieldEmpty(Booking booking) {
+		return booking.getFirst_name() == null || booking.getLast_name() == null || booking.getStart_time() == null
+				|| booking.getEnd_time() == null || booking.getDate() == null;
+	}
+
 	@GetMapping("/booking")
 	public List<Booking> retrieveAllBooking() {
 		return bookingrepository.findAll();
@@ -57,23 +63,25 @@ public class BookingResource {
 	@PostMapping("/users/{user_id}/booking")
 	public ResponseEntity<Object> createBooking(@PathVariable("user_id") Integer userId, @RequestBody Booking booking) {
 		Optional<User> user = userRepository.findById(userId);
-//		if (!user.isPresent()) {
-//			throw new UserNotFoundException("User not found with id: " + userId);
-//		}
+		if (!user.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with userid " + userId + " not found");
 
+		}
+		if (isAnyFieldEmpty(booking)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All fields must be filled");
+		}
 		booking.setUser(user.get());
 
-		String userName = booking.getUser_name();
 		LocalDate date = booking.getDate();
 		LocalTime startTime = booking.getStart_time();
+		LocalTime endTime = booking.getEnd_time();
 
-		// Check if a booking with the specified sportName, date, and startTime already
+		// Check if a booking with the specified date, and startTime already
 		// exists
-		boolean userbookingExists = bookingrepository.existsByUserNameAndDateAndStartTime(userName, date, startTime);
+		boolean userbookingExists = bookingrepository.existsByDateAndStartTime(date, startTime, endTime);
 
 		if (userbookingExists) {
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body("Booking already exists for the specified user, date, and start time");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Booking Not Available");
 		}
 
 //		String sportName = booking.getSport_name();
