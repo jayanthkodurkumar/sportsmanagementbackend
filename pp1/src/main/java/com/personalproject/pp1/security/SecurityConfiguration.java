@@ -26,7 +26,7 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.GET, "/users/*").hasRole("user")
 						.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("user")
 						.requestMatchers(HttpMethod.GET, "/users").hasRole("admin")
-						.requestMatchers(HttpMethod.POST, "/users").permitAll()
+						.requestMatchers(HttpMethod.POST, "/createuser").permitAll()
 						.requestMatchers(HttpMethod.POST, "/users/*/booking").hasRole("user")
 						.requestMatchers(HttpMethod.GET, "/booking").hasRole("admin").anyRequest().authenticated()
 

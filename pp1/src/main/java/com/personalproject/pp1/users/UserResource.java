@@ -76,25 +76,7 @@ public class UserResource implements UserDetailsService {
 //		return entitymodel;
 	}
 
-//	post request for creating user
-	@PostMapping("/users")
-	public ResponseEntity<String> createUser(@RequestBody User user) {
 
-		String userName = user.getUser_name();
-		boolean userExists = userrepository.existsByusername(userName);
-
-		if (userExists) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
-
-		}
-		// Encrypt the password before saving
-		String encryptedPassword = passwordEncoder.encode(user.getPassword());
-		user.setPassword(encryptedPassword);
-		User savedUser = userrepository.save(user);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(savedUser.getUser_id()).toUri();
-
-		return ResponseEntity.created(location).build();
-	}
 
 //	delete by id
 
