@@ -21,16 +21,15 @@ public class SecurityConfiguration {
 		return http
 
 				.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-						.requestMatchers(HttpMethod.GET, "/").permitAll()
-						.requestMatchers(HttpMethod.POST, "/login").permitAll()
-						.requestMatchers(HttpMethod.GET, "/users/*").hasRole("user")
+						.requestMatchers(HttpMethod.GET, "/").permitAll().requestMatchers(HttpMethod.POST, "/login")
+						.permitAll().requestMatchers(HttpMethod.GET, "/users/*").hasRole("user")
 						.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("user")
 						.requestMatchers(HttpMethod.GET, "/users").hasRole("admin")
 						.requestMatchers(HttpMethod.POST, "/createuser").permitAll()
 						.requestMatchers(HttpMethod.POST, "/users/*/booking").hasRole("user")
 						.requestMatchers(HttpMethod.GET, "/booking").hasRole("admin").anyRequest().authenticated()
 
-				).csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults())
+				).csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults()).cors(Customizer.withDefaults())
 
 				.build();
 	}
