@@ -22,11 +22,14 @@ public class SecurityConfiguration {
 
 				.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 						.requestMatchers(HttpMethod.GET, "/").permitAll().requestMatchers(HttpMethod.POST, "/login")
-						.permitAll().requestMatchers(HttpMethod.GET, "/users/*").hasRole("user")
-						.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("user")
+						.permitAll().requestMatchers(HttpMethod.GET, "/users/*").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/users/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/users").hasRole("admin")
 						.requestMatchers(HttpMethod.POST, "/createuser").permitAll()
-						.requestMatchers(HttpMethod.POST, "/users/*/booking").hasRole("user")
+						.requestMatchers(HttpMethod.GET, "/users/*/bookings").permitAll()
+						.requestMatchers(HttpMethod.POST, "/users/*/booking").permitAll()
+						.requestMatchers(HttpMethod.GET, "/booking/**").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/booking/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/booking").hasRole("admin").anyRequest().authenticated()
 
 				).csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults()).cors(Customizer.withDefaults())

@@ -97,8 +97,9 @@ public class BookingResource {
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(savedBooking.getBookingId()).toUri();
+		return ResponseEntity.created(location).body(savedBooking);
 
-		return ResponseEntity.created(location).build();
+//		return ResponseEntity.created(location).build();
 	}
 
 // get booking by user id
